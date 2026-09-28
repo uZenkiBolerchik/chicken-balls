@@ -19,9 +19,12 @@ def get_tasks():
     return jsonify(tasks)
 
 
-@app.route('/api/tasks/<int::id>', methods = ["PUT"])
+@app.route('/api/tasks/<int:id>', methods = ["PUT"])
 def update_task(id):
-    if id not in tasks:
+
+    task = next((t for t in tasks if t['id'] == id), None)
+
+    if task is None:
         return jsonify({'error':'not found'}), 404
 
 
@@ -33,7 +36,7 @@ def update_task(id):
 
     return jsonify({'message': 'Updated', 'task': tasks[id]}), 200
 
-@app.route('/api/tasks/<int::id>', methods = ['DELETE'])
+@app.route('/api/tasks/<int:id>', methods = ['DELETE'])
 def delete_task(id):
     if id not in tasks:
             return jsonify({'error':'not found'}), 404
